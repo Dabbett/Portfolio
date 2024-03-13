@@ -4,7 +4,7 @@ Welcome to my portfolio repository! Here, I showcase my projects, skills, and ex
 
 ## About Me
 
-I am passionate about leveraging technology to create innovative solutions that make a positive impact. With a background in public service, I bring a unique blend of skills in high problem solving in the highest pressure enviroments and bring technical skills to get the job done well.
+I am passionate about leveraging technology to create innovative solutions that make a positive impact. With a background in public service, I bring a unique blend of skills in high problem-solving in the highest pressure environments and bring technical skills to get the job done well.
 
 ## Projects
 
