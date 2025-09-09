@@ -87,7 +87,7 @@ export default function Contact({ onClose }: ContactProps) {
       {/* Additional Contact Info */}
       <div className="text-sm text-gray-300 text-center">
         <p>
-          I'm always interested in discussing new opportunities, innovative projects, 
+          I&apos;m always interested in discussing new opportunities, innovative projects, 
           and collaborations. Whether you have a project in mind or just want to chat 
           about technology, feel free to reach out!
         </p>

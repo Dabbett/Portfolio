@@ -44,7 +44,7 @@ export default function About({ onClose }: AboutProps) {
       </div>
 
       <p className="mb-8">
-        When I'm not doing codewars you can find me traveling with my nuclear family based out of Wilmington, NC. I have a background in the fire service and am an avid fisherman and boat captain. We love the mountains, enjoying skiing, hiking and snow mobiling, but the ocean is our first love. It is my greatest accomplishment that my kids have taken my love for adventure and often refer to our frequent outings as such.
+        When I&apos;m not doing codewars you can find me traveling with my nuclear family based out of Wilmington, NC. I have a background in the fire service and am an avid fisherman and boat captain. We love the mountains, enjoying skiing, hiking and snow mobiling, but the ocean is our first love. It is my greatest accomplishment that my kids have taken my love for adventure and often refer to our frequent outings as such.
         <br />
         <br />
         After 10 years as a firefighter, I was driven to tech by my passion for innovation and AI and my desire to play a part in the future of tech. I thrive under pressure but know how to slow down and enjoy the little things in life. I am the creator of ReelSmart, which melds my hobbies with my profession, a dream of mine for many years. Head over to my{' '}

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import Header from '@/components/Header';
 import Intro from '@/components/Intro';
 import Work from '@/components/Work';

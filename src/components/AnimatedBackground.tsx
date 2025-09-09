@@ -72,7 +72,7 @@ export default function AnimatedBackground() {
   // Helper function to get extreme screen positions for dramatic movement
 
   // Function to get random direction for each orb (different directions)
-  const getRandomDirection = (index: number) => {
+  const getRandomDirection = () => {
     return {
       x: Math.random() * 100, // Truly random across entire screen width
       y: Math.random() * 100, // Truly random across entire screen height
@@ -98,7 +98,7 @@ export default function AnimatedBackground() {
     // Generate random directions for all blobs (different directions)
     const newTargets: {x: number, y: number}[] = [];
     for (let i = 0; i < 8; i++) {
-      newTargets.push(getRandomDirection(i));
+      newTargets.push(getRandomDirection());
     }
     
     // Update all blobs with new targets and start interaction
