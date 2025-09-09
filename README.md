@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dylan Abbett - Portfolio (Next.js)
+
+A modern, responsive portfolio website built with Next.js 15, TypeScript, and Tailwind CSS.
+
+## Features
+
+- **Modern Tech Stack**: Built with Next.js 15, React 19, TypeScript, and Tailwind CSS
+- **Smooth Animations**: Implemented with Framer Motion for elegant transitions
+- **Responsive Design**: Fully responsive across all device sizes
+- **Type Safety**: Full TypeScript support for better development experience
+- **Performance Optimized**: Next.js Image optimization and modern React patterns
+- **Interactive Navigation**: Smooth section transitions with state management
+
+## Sections
+
+- **Intro**: Personal introduction and overview
+- **Work**: Showcase of React projects, full-stack applications, and e-commerce sites
+- **About**: Personal background and interests
+- **Contact**: Contact information and social links
+
+## Projects Showcased
+
+### React Projects
+- **Mangrove**: AI-powered mental health app with Next.js, TypeScript, and Tailwind CSS
+- **The Quizzard**: AI-powered quiz generator from PDF uploads
+- **TaskDrag**: Responsive task manager with drag-and-drop functionality
+- **MERN AI Chatbot**: Full-stack AI chatbot (deprecated)
+
+### Full-Stack Applications
+- **Fish Notebook**: CRUD application with MongoDB
+
+### E-Commerce
+- **Old Soul Sourdough**: Artisanal bread e-commerce storefront
+
+### Frontend Websites
+- **Heidi Esparrago Therapy**: Responsive therapist website with contact form integration
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Font**: Source Sans 3
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Build for Production
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+├── app/
+│   ├── globals.css      # Global styles and custom CSS
+│   ├── layout.tsx       # Root layout component
+│   └── page.tsx         # Main page component
+└── components/
+    ├── Header.tsx       # Navigation header
+    ├── Intro.tsx        # Introduction section
+    ├── Work.tsx         # Portfolio projects
+    ├── About.tsx        # About section
+    ├── Contact.tsx      # Contact information
+    └── Footer.tsx       # Footer component
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Customization
 
-## Learn More
+The portfolio is easily customizable:
 
-To learn more about Next.js, take a look at the following resources:
+- Update project information in `src/components/Work.tsx`
+- Modify personal information in `src/components/Intro.tsx` and `src/components/About.tsx`
+- Update contact information in `src/components/Contact.tsx`
+- Customize styling in `src/app/globals.css` and Tailwind classes
+- Add new sections by creating new components and updating the main page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is ready for deployment on platforms like:
+- Vercel (recommended for Next.js)
+- Netlify
+- AWS Amplify
+- Any static hosting service
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is for personal portfolio use. All rights reserved.
