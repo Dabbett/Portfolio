@@ -80,7 +80,7 @@ export default function AnimatedBackground() {
   };
 
   // Function to trigger orb movement on interaction
-  const triggerOrbMovement = useCallback(() => {
+  const triggerOrbMovement = useCallback((buttonPosition?: { x: number; y: number }) => {
     if (isInteractingRef.current || !hasRejoinedRef.current || !mountedRef.current) return; // Prevent multiple interactions or clicks before rejoining
     
     if (!hasLoggedInteraction) {
@@ -95,10 +95,26 @@ export default function AnimatedBackground() {
       setFadeTimer(null);
     }
     
-    // Generate random directions for all blobs (different directions)
+    // Generate target positions for all blobs (converge on button or random)
     const newTargets: {x: number, y: number}[] = [];
-    for (let i = 0; i < 8; i++) {
-      newTargets.push(getRandomDirection());
+    
+    if (buttonPosition) {
+      // Create a cluster around the button position with some variation
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2; // Distribute blobs in a circle
+        const radius = 5 + (i % 3) * 2; // Vary the distance from center
+        const variation = (Math.random() - 0.5) * 4; // Add some randomness
+        
+        newTargets.push({
+          x: Math.max(0, Math.min(100, buttonPosition.x + Math.cos(angle) * radius + variation)),
+          y: Math.max(0, Math.min(100, buttonPosition.y + Math.sin(angle) * radius + variation))
+        });
+      }
+    } else {
+      // Fallback to random if no button position
+      for (let i = 0; i < 8; i++) {
+        newTargets.push(getRandomDirection());
+      }
     }
     
     // Update all blobs with new targets and start interaction
@@ -208,8 +224,15 @@ export default function AnimatedBackground() {
   useEffect(() => {
     const handleButtonClick = (event: Event) => {
       const target = event.target as HTMLElement;
-      if (target.tagName === 'BUTTON' || target.closest('button')) {
-        triggerOrbMovement();
+      const button = target.tagName === 'BUTTON' ? target : target.closest('button');
+      
+      if (button) {
+        // Get button position relative to viewport
+        const rect = button.getBoundingClientRect();
+        const buttonX = (rect.left + rect.width / 2) / window.innerWidth * 100;
+        const buttonY = (rect.top + rect.height / 2) / window.innerHeight * 100;
+        
+        triggerOrbMovement({ x: buttonX, y: buttonY });
       }
     };
 
