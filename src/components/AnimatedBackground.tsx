@@ -371,8 +371,9 @@ export default function AnimatedBackground() {
           
           
           
-          // Random movement for non-meeting blobs
-          if (blob.movementPhase === 'random' && Math.random() < 0.01) {
+          // Random movement for non-meeting blobs (less frequent on mobile)
+          const randomChance = isMobile ? 0.005 : 0.01; // Half the chance on mobile
+          if (blob.movementPhase === 'random' && Math.random() < randomChance) {
             newTargetX = Math.random() * 100;
             newTargetY = Math.random() * 100;
             newTargetSize = Math.random() * 60 + 40;
@@ -380,8 +381,8 @@ export default function AnimatedBackground() {
           
           return {
             ...blob,
-            x: Math.max(0, Math.min(100, newX)),
-            y: Math.max(0, Math.min(100, newY)),
+            x: isInteracting ? newX : Math.max(0, Math.min(100, newX)), // Only allow off-screen during interaction
+            y: isInteracting ? newY : Math.max(0, Math.min(100, newY)), // Only allow off-screen during interaction
             size: Math.max(20, Math.min(120, newSize)),
             targetX: newTargetX,
             targetY: newTargetY,
@@ -435,10 +436,10 @@ export default function AnimatedBackground() {
             backfaceVisibility: 'hidden',
           }}
           animate={{
-            scale: [1, 1.1, 0.9, 1],
+            scale: isMobile ? [1, 1.05, 0.95, 1] : [1, 1.1, 0.9, 1], // Less intense on mobile
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: isMobile ? 4 + Math.random() * 2 : 3 + Math.random() * 2, // Slower on mobile
             repeat: Infinity,
             ease: "easeInOut",
           }}
