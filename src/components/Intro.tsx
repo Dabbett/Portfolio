@@ -53,7 +53,7 @@ export default function Intro({ onClose, onNavigate }: IntroProps) {
             <span className="text-xs font-semibold text-blue-300 uppercase tracking-wider">tl;dr</span>
           </div>
           <p className="text-gray-200 text-sm leading-relaxed font-medium">
-            Focused and devoted software developer with experience across web, mobile, and backend — React, Next.js, TypeScript, Swift, MongoDB, Supabase, WordPress, and Shopify. I build everything from MVPs and AI-driven features to greenfield products, always aiming for clear, reliable, and scalable solutions.
+            Focused and devoted software developer with experience across web, mobile, and backend — React, Next.js, TypeScript, Swift, MongoDB, Supabase, WordPress, and Shopify. From MVPs to Greenfield Projects with AI-driven features to simple marketing websites, I can build your app; always aiming for clear, reliable, and scalable solutions.
           </p>
         </div>
       </div>
