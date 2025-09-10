@@ -2,21 +2,33 @@
 
 import { motion } from 'framer-motion';
 import { Section } from '@/app/page';
+import { useState, useEffect } from 'react';
 
 interface HeaderProps {
   onNavigate: (section: Section) => void;
 }
 
 export default function Header({ onNavigate }: HeaderProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Detect mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   return (
     <motion.header
-      initial={{ opacity: 0, scale: 0.95, filter: 'blur(0.125rem)' }}
+      initial={isMobile ? { opacity: 1, scale: 1, filter: 'blur(0rem)' } : { opacity: 0, scale: 0.95, filter: 'blur(0.125rem)' }}
       animate={{ opacity: 1, scale: 1, filter: 'blur(0rem)' }}
-      transition={{ duration: 0.325, delay: 2 }}
-      className="flex flex-col items-center transition-all duration-325 ease-in-out max-w-full text-center"
-      // style={{
-      //   backgroundImage: 'radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%)'
-      // }}
+      transition={isMobile ? { duration: 0 } : { duration: 0.325, delay: 1 }}
+      className={`flex flex-col items-center max-w-full text-center ${isMobile ? '' : 'transition-all duration-325 ease-in-out'}`}
+     
     >
       {/* Logo */}
       
@@ -30,7 +42,7 @@ export default function Header({ onNavigate }: HeaderProps) {
         }}
       >
         <div 
-          className="transition-all duration-750 ease-in-out delay-250 overflow-hidden"
+          className={`transition-all duration-750 ease-in-out overflow-hidden ${isMobile ? '' : 'delay-250'}`}
           style={{
             padding: '2rem clamp(0.5rem, 10vw, 10rem) 1rem clamp(0.5rem, 10vw, 10rem)',
           }}

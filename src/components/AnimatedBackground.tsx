@@ -37,13 +37,15 @@ export default function AnimatedBackground() {
   const isInteractingRef = useRef(isInteracting);
   const hasRejoinedRef = useRef(hasRejoined);
   const mountedRef = useRef(mounted);
+  const isMobileRef = useRef(isMobile);
   
   // Update refs when state changes
   useEffect(() => {
     isInteractingRef.current = isInteracting;
     hasRejoinedRef.current = hasRejoined;
     mountedRef.current = mounted;
-  }, [isInteracting, hasRejoined, mounted]);
+    isMobileRef.current = isMobile;
+  }, [isInteracting, hasRejoined, mounted, isMobile]);
   
 
 
@@ -233,18 +235,14 @@ export default function AnimatedBackground() {
     }
     setMounted(true);
     
-    // Detect mobile for performance optimizations
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    // Detect mobile for performance optimizations - do this once on mount
+    const isMobileDevice = window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    setIsMobile(isMobileDevice);
     
     // Only initialize blobs if they don't exist
     setBlobs(prevBlobs => {
       if (prevBlobs.length > 0) return prevBlobs; // Don't reinitialize if blobs exist
-      const blobCount = isMobile ? 4 : 8; // Fewer blobs on mobile
+      const blobCount = isMobileDevice ? 4 : 8; // Fewer blobs on mobile
       const initialBlobs: Blob[] = Array.from({ length: blobCount }, (_, i) => {
         // Generate off-screen starting positions (from various edges)
         const edge = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
@@ -300,9 +298,24 @@ export default function AnimatedBackground() {
         }))
       );
     }, 1000); // Start fade-in after 1 second
+  }, [hasLoggedWelcome]); // Remove isMobile dependency to prevent re-renders
 
-    return () => window.removeEventListener('resize', checkMobile);
-  }, [hasLoggedWelcome, isMobile]); // Include isMobile dependency
+  // Separate effect for resize handling (without causing re-renders)
+  useEffect(() => {
+    const handleResize = () => {
+      const newIsMobile = window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      // Only update if the mobile state actually changed
+      setIsMobile(prevIsMobile => {
+        if (prevIsMobile !== newIsMobile) {
+          return newIsMobile;
+        }
+        return prevIsMobile;
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // Empty dependency array - only run once
 
   // Separate effect for event listener
   useEffect(() => {
@@ -442,7 +455,7 @@ export default function AnimatedBackground() {
           
           
           // Random movement for non-meeting blobs - more frequent exploration
-          const randomChance = isMobile ? 0.008 : 0.015; // Increased for more exploration
+          const randomChance = isMobileRef.current ? 0.008 : 0.015; // Use ref instead of state
           if (blob.movementPhase === 'random' && Math.random() < randomChance) {
             // Allow orbs to explore beyond screen edges for natural movement
             newTargetX = Math.random() * 120 - 10; // -10% to 110% range
@@ -464,10 +477,10 @@ export default function AnimatedBackground() {
           };
         });
       });
-    }, isMobile ? 50 : 33); // Slower on mobile for better performance
+    }, isMobileRef.current ? 50 : 33); // Use ref instead of state
 
     return () => clearInterval(interval);
-  }, [mounted, isInteracting, hasRejoined, interactionStartTime, hasLoggedInteraction, isMobile]);
+  }, [mounted, isInteracting, hasRejoined, interactionStartTime, hasLoggedInteraction]); // No isMobile dependency needed
 
   // This effect is no longer needed since fade-in happens at 3 seconds
 
