@@ -55,14 +55,14 @@ const projects: Project[] = [
     link: 'https://thequizzard.vercel.app',
     technologies: 'React, AI Integration, PDF Processing'
   },
-  {
-    id: 'taskdrag',
-    title: 'TaskDrag',
-    description: 'Responsive Task Manager With Drag and Drop user interaction',
-    image: '/images/taskdrag.png',
-    link: 'https://taskdrag.netlify.app/',
-    technologies: 'React, Drag & Drop, Task Management'
-  },
+  // {
+  //   id: 'taskdrag',
+  //   title: 'TaskDrag',
+  //   description: 'Responsive Task Manager With Drag and Drop user interaction. This is an older page, used to showcase growth this last couple of years.',
+  //   image: '/images/taskdrag.png',
+  //   link: 'https://taskdrag.netlify.app/',
+  //   technologies: 'React, Drag & Drop, Task Management'
+  // },
   // {
   //   id: 'mern-ai',
   //   title: 'MERN AI Chatbot',
@@ -124,23 +124,30 @@ export default function Work({ onClose, onShowBlogPost }: WorkProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="glass-container p-6"
+            className="glass-container"
+            style={{ padding: '0.75rem' }}
             role="article"
             aria-labelledby={`project-${project.id}-title`}
           >
             <div className="flex flex-col md:flex-row gap-6">
               {/* Project Image */}
               <div className="md:w-1/3">
-                <div className="relative overflow-hidden rounded-lg">
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block relative overflow-hidden rounded-lg group"
+                  aria-label={`View ${project.title} project`}
+                >
                   <Image
                     src={project.image}
                     alt={`${project.title} - ${project.description.substring(0, 100)}...`}
                     width={400}
                     height={300}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
-                </div>
+                </a>
               </div>
 
               {/* Project Details */}
@@ -159,7 +166,8 @@ export default function Work({ onClose, onShowBlogPost }: WorkProps) {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm"
+                    className="inline-flex items-center gap-2 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white hover:bg-white/7.5 active:bg-white/17.5"
+                    style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
                     aria-label={`View ${project.title} project (opens in new tab)`}
                   >
                     <ExternalLink className="w-4 h-4" aria-hidden="true" />
@@ -169,7 +177,8 @@ export default function Work({ onClose, onShowBlogPost }: WorkProps) {
                   {project.blogPost && onShowBlogPost && (
                     <button
                       onClick={() => onShowBlogPost(project.blogPost!)}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 text-sm"
+                      className="inline-flex items-center gap-2 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white hover:bg-white/7.5 active:bg-white/17.5"
+                      style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
                       aria-label={`Read case study for ${project.title}`}
                     >
                       <BookOpen className="w-4 h-4" aria-hidden="true" />
