@@ -121,6 +121,7 @@ em, i {
   margin: 5px;
 }
 
+
 /* Performance optimizations for animations */
 @media (prefers-reduced-motion: reduce) {
   .glass-container,
@@ -287,6 +288,29 @@ body.is-article-visible #bg:after {
   overflow-wrap: break-word;
   hyphens: auto;
 }
+
+/* Code Panel Styles */
+.code-panel {
+  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+}
+
+.code-panel pre {
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.code-panel code {
+  font-family: inherit;
+}
+
+/* Syntax highlighting for code panel */
+.language-tsx .keyword { color: #c792ea; }
+.language-tsx .string { color: #c3e88d; }
+.language-tsx .comment { color: #676e95; }
+.language-tsx .function { color: #82aaff; }
+.language-tsx .tag { color: #f07178; }
+.language-tsx .attribute { color: #ffcb6b; }
 
 /* Responsive design */
 @media screen and (max-width: 736px) {

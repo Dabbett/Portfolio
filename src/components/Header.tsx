@@ -14,9 +14,9 @@ export default function Header({ onNavigate }: HeaderProps) {
       animate={{ opacity: 1, scale: 1, filter: 'blur(0rem)' }}
       transition={{ duration: 0.325 }}
       className="flex flex-col items-center transition-all duration-325 ease-in-out max-w-full text-center"
-      style={{
-        backgroundImage: 'radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%)'
-      }}
+      // style={{
+      //   backgroundImage: 'radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%)'
+      // }}
     >
       {/* Logo */}
       
@@ -26,7 +26,7 @@ export default function Header({ onNavigate }: HeaderProps) {
         className="border-t border-b border-white w-full max-w-2xl glass-container-light"
         style={{ 
           borderStyle: 'solid',
-          marginTop: '3.5rem'
+          marginTop: 'clamp(1.5rem, 5vw, 3.5rem)' // Responsive: 1.5rem on mobile, 3.5rem on desktop
         }}
       >
         <div 
@@ -53,7 +53,7 @@ export default function Header({ onNavigate }: HeaderProps) {
       </div>
 
       {/* Navigation */}
-      <nav style={{ marginTop: '3.5rem' }}>
+      <nav style={{ marginTop: 'clamp(1.5rem, 4vw, 3.5rem)' }}>
         <ul className="flex flex-col sm:flex-row list-none p-0 border border-white rounded min-w-40 max-w-full glass-container-light">
           <li className="border-t sm:border-t-0 sm:border-l border-white first:border-t-0 sm:first:border-l-0">
             <button

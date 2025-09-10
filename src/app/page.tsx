@@ -9,12 +9,15 @@ import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import AnimatedBackground from '@/components/AnimatedBackground';
+import CodePanel from '@/components/CodePanel';
+import CodeToggle from '@/components/CodeToggle';
 
 export type Section = 'intro' | 'work' | 'about' | 'contact';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<Section | null>(null);
   const [isPreload, setIsPreload] = useState(true);
+  const [isCodePanelOpen, setIsCodePanelOpen] = useState(false);
 
   useEffect(() => {
     // Remove preload class after component mounts
@@ -33,6 +36,10 @@ export default function Home() {
     setActiveSection(null);
   };
 
+  const toggleCodePanel = () => {
+    setIsCodePanelOpen(!isCodePanelOpen);
+  };
+
   return (
     <div className={`min-h-screen ${isPreload ? 'is-preload' : ''}`} style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%)' }}>
       {/* Background */}
@@ -45,7 +52,7 @@ export default function Home() {
       <div 
         className="flex flex-col items-center justify-between relative min-h-screen w-full"
         style={{ 
-          padding: '4rem 2rem',
+          padding: 'clamp(2rem, 6vw, 4rem) 2rem', // Responsive: 2rem on mobile, 4rem on desktop
           minHeight: '100vh',
           zIndex: 30
         }}
@@ -54,7 +61,7 @@ export default function Home() {
         <Header onNavigate={showSection} />
 
         {/* Main Content */}
-        <div className="flex-1 flex items-start justify-center flex-col relative max-w-full z-30" style={{ marginTop: '3.5rem' }}>
+        <div className="flex-1 flex items-start justify-center flex-col relative max-w-full z-30" style={{ marginTop: 'clamp(1.5rem, 4vw, 3.5rem)' }}>
           <AnimatePresence>
             {activeSection && (
               <motion.div
@@ -100,6 +107,21 @@ export default function Home() {
         {/* Footer */}
         <Footer />
       </div>
+
+      {/* Code Panel Toggle - Desktop Only */}
+      <div className="hidden lg:block">
+        <CodeToggle 
+          onClick={toggleCodePanel} 
+          isActive={isCodePanelOpen} 
+        />
+      </div>
+
+      {/* Code Panel */}
+      <CodePanel 
+        isOpen={isCodePanelOpen}
+        onClose={() => setIsCodePanelOpen(false)}
+        activeSection={activeSection}
+      />
     </div>
   );
 }

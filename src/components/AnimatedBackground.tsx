@@ -31,6 +31,8 @@ export default function AnimatedBackground() {
   const [interactionStartTime, setInteractionStartTime] = useState<number>(0);
   const [hasLoggedWelcome, setHasLoggedWelcome] = useState(false);
   const [hasLoggedInteraction, setHasLoggedInteraction] = useState(false);
+  const [scatterDirections, setScatterDirections] = useState<{x: number, y: number}[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Use refs to avoid dependency issues
   const isInteractingRef = useRef(isInteracting);
@@ -99,17 +101,19 @@ export default function AnimatedBackground() {
     const newTargets: {x: number, y: number}[] = [];
     
     if (buttonPosition) {
-      // Create a cluster around the button position with some variation
+      // Create random scatter directions for each blob
+      const directions: {x: number, y: number}[] = [];
       for (let i = 0; i < 8; i++) {
-        const angle = (i / 8) * Math.PI * 2; // Distribute blobs in a circle
-        const radius = 5 + (i % 3) * 2; // Vary the distance from center
-        const variation = (Math.random() - 0.5) * 4; // Add some randomness
+        const angle = Math.random() * Math.PI * 2; // Completely random direction
+        const radius = 80 + Math.random() * 40; // Random distance to go off screen
         
-        newTargets.push({
-          x: Math.max(0, Math.min(100, buttonPosition.x + Math.cos(angle) * radius + variation)),
-          y: Math.max(0, Math.min(100, buttonPosition.y + Math.sin(angle) * radius + variation))
-        });
+        const targetX = buttonPosition.x + Math.cos(angle) * radius;
+        const targetY = buttonPosition.y + Math.sin(angle) * radius;
+        
+        newTargets.push({ x: targetX, y: targetY });
+        directions.push({ x: targetX, y: targetY }); // Store for return journey
       }
+      setScatterDirections(directions); // Store directions for return
     } else {
       // Fallback to random if no button position
       for (let i = 0; i < 8; i++) {
@@ -123,7 +127,7 @@ export default function AnimatedBackground() {
         ...blob,
         targetX: newTargets[index].x,
         targetY: newTargets[index].y,
-        speed: 0.03, // Speed for smooth fly-away movement
+        speed: 0.08, // Higher speed for dramatic race-off effect
         // Keep current x, y positions - don't jump to targets
       }))
     );
@@ -132,7 +136,7 @@ export default function AnimatedBackground() {
     setHasRejoined(false);
     setInteractionStartTime(Date.now());
     
-    // Start gradual fade after a short delay
+    // Start gradual fade after they've had time to race off
     setTimeout(() => {
       if (!hasLoggedInteraction) {
         console.log("👻 Poof! Orbs are fading away... (Don't worry, they'll be back!)");
@@ -140,10 +144,10 @@ export default function AnimatedBackground() {
       setBlobs(prevBlobs => 
         prevBlobs.map(blob => ({
           ...blob,
-          opacity: 0.1, // Start fading gradually
+          // opacity: 0.1, // Start fading gradually
         }))
       );
-    }, 300); // Start fading after 300ms
+    }, 1000); // Start fading after 1 second
     
         // Complete fade out after more time
         const timer2 = setTimeout(() => {
@@ -153,7 +157,7 @@ export default function AnimatedBackground() {
           setBlobs(prevBlobs =>
             prevBlobs.map(blob => ({
               ...blob,
-              opacity: 0, // Fade completely out
+              // opacity: 0, // Fade completely out
             }))
           );
         }, 1200); // Complete fade after 1.2 seconds
@@ -169,22 +173,22 @@ export default function AnimatedBackground() {
           setIsInteracting(false);
           setHasRejoined(true);
           
-          // Fade back in and give orbs new random targets
+          // Fade back in and return from scatter directions
           setBlobs(prevBlobs => 
-            prevBlobs.map(blob => ({
+            prevBlobs.map((blob, index) => ({
               ...blob,
               speed: 0.015, // Slower speed for smooth transition
-              opacity: 0.3 + (blob.size / 200), // Fade back in
-              targetX: Math.random() * 100, // NEW: Random target X
-              targetY: Math.random() * 100, // NEW: Random target Y
-              targetSize: Math.random() * 60 + 40, // NEW: Random target size
-              movementPhase: 'random' as const, // NEW: Reset to random movement
-              hasMet: false, // NEW: Reset meeting state
-              lastMeetingTime: 0, // NEW: Reset meeting time
+              // opacity: 0.3 + (blob.size / 200), // Fade back in
+              targetX: scatterDirections[index]?.x ?? Math.random() * 100, // Return from scatter direction
+              targetY: scatterDirections[index]?.y ?? Math.random() * 100, // Return from scatter direction
+              targetSize: Math.random() * 60 + 40, // Random target size
+              movementPhase: 'random' as const, // Reset to random movement
+              hasMet: false, // Reset meeting state
+              lastMeetingTime: 0, // Reset meeting time
             }))
           );
         }, 3000); // Start movement and fade-in at 3 seconds
-  }, [fadeTimer, hasLoggedInteraction]);
+  }, [fadeTimer, hasLoggedInteraction, scatterDirections]);
 
   useEffect(() => {
     if (!hasLoggedWelcome) {
@@ -194,10 +198,19 @@ export default function AnimatedBackground() {
     }
     setMounted(true);
     
+    // Detect mobile for performance optimizations
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     // Only initialize blobs if they don't exist
     setBlobs(prevBlobs => {
       if (prevBlobs.length > 0) return prevBlobs; // Don't reinitialize if blobs exist
-      const initialBlobs: Blob[] = Array.from({ length: 8 }, (_, i) => ({
+      const blobCount = isMobile ? 4 : 8; // Fewer blobs on mobile
+      const initialBlobs: Blob[] = Array.from({ length: blobCount }, (_, i) => ({
         id: `blob-${i}`,
         x: Math.random() * 100,
         y: Math.random() * 100,
@@ -218,6 +231,7 @@ export default function AnimatedBackground() {
       return initialBlobs;
     });
 
+    return () => window.removeEventListener('resize', checkMobile);
   }, [hasLoggedWelcome]); // Only run once on mount
 
   // Separate effect for event listener
@@ -232,7 +246,11 @@ export default function AnimatedBackground() {
         const buttonX = (rect.left + rect.width / 2) / window.innerWidth * 100;
         const buttonY = (rect.top + rect.height / 2) / window.innerHeight * 100;
         
-        triggerOrbMovement({ x: buttonX, y: buttonY });
+        // Adjust for better centering
+        const adjustedX = Math.max(10, Math.min(90, buttonX));
+        const adjustedY = Math.max(10, Math.min(90, buttonY));
+        
+        triggerOrbMovement({ x: adjustedX, y: adjustedY });
       }
     };
 
@@ -260,15 +278,17 @@ export default function AnimatedBackground() {
             let newX = blob.x;
             let newY = blob.y;
             
-            if (distance > 0.5) {
+            if (distance > 1) {
               // Calculate parabolic speed based on time elapsed
               const elapsed = currentTime - interactionStartTime;
-              const totalDuration = 3000; // 3 seconds total
+              const totalDuration = 2000; // 2 seconds total for faster movement
               const progress = Math.min(elapsed / totalDuration, 1); // 0 to 1
-              const parabolicSpeed = 4 * progress * (1 - progress); // Parabolic curve: 0 at start/end, 1 at middle
+              const parabolicSpeed = 3 * progress * (1 - progress); // Smoother parabolic curve
               
-              const moveX = (dx / distance) * blob.speed * 100 * (0.3 + parabolicSpeed);
-              const moveY = (dy / distance) * blob.speed * 100 * (0.3 + parabolicSpeed);
+              // Smoother movement with easing
+              const easeFactor = 0.08 + (parabolicSpeed * 0.15); // Smoother easing
+              const moveX = (dx / distance) * easeFactor * 100;
+              const moveY = (dy / distance) * easeFactor * 100;
               newX += moveX;
               newY += moveY;
             } else {
@@ -278,8 +298,8 @@ export default function AnimatedBackground() {
             
             return {
               ...blob,
-              x: Math.max(0, Math.min(100, newX)),
-              y: Math.max(0, Math.min(100, newY)),
+              x: newX, // Allow off-screen movement during interaction
+              y: newY, // Allow off-screen movement during interaction
             };
           });
         }
@@ -372,7 +392,7 @@ export default function AnimatedBackground() {
           };
         });
       });
-    }, 50); // 20fps for better performance
+    }, isMobile ? 50 : 33); // Slower on mobile for better performance
 
     return () => clearInterval(interval);
   }, [mounted, isInteracting, hasRejoined, interactionStartTime, hasLoggedInteraction]);
@@ -407,7 +427,12 @@ export default function AnimatedBackground() {
             borderRadius: '50%',
             boxShadow: `0 0 ${blob.size * 0.8}px ${blob.color}, inset 0 0 ${blob.size * 0.4}px ${blob.color}80`,
             transform: 'translate(-50%, -50%)',
-            transition: 'opacity 0.5s ease-in-out', // Smooth opacity transition
+            // transition: 'opacity 0.5s ease-in-out', // Smooth opacity transition
+            // iOS optimizations
+            willChange: 'transform, opacity',
+            WebkitTransform: 'translate(-50%, -50%)',
+            WebkitBackfaceVisibility: 'hidden',
+            backfaceVisibility: 'hidden',
           }}
           animate={{
             scale: [1, 1.1, 0.9, 1],
