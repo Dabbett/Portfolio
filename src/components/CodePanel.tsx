@@ -465,7 +465,7 @@ export default function Contact({ onClose }: ContactProps) {
 
       {/* Social Links */}
       <div className="mb-8">
-        <h3 className="text-lg font-medium text-center text-white uppercase tracking-wide mb-6" style={{ marginBottom: '1.5rem', marginTop: '1.5rem' }}>Or connect with me</h3>
+        <h3 className="text-lg font-medium text-center text-white uppercase tracking-wide my-6">Or connect with me</h3>
         
         <div className="flex justify-center border border-white rounded glass-container-light relative overflow-hidden">
           <a
@@ -564,7 +564,7 @@ export default function CodePanel({ isOpen, onClose, activeSection }: CodePanelP
             className="fixed left-0 top-0 h-full w-1/2 bg-gray-900 z-50 border-r border-gray-700"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-700 bg-gray-800" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700 bg-gray-800">
               <div className="flex items-center gap-2">
                 <Code2 className="w-5 h-5 text-blue-400" />
                 <h3 className="text-lg font-semibold text-white">
@@ -585,7 +585,7 @@ export default function CodePanel({ isOpen, onClose, activeSection }: CodePanelP
               {currentCode ? (
                 <>
                   {/* Description */}
-                  <div className="p-4 bg-gray-800 border-b border-gray-700" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                  <div className="px-4 py-4 bg-gray-800 border-b border-gray-700">
                     <p className="text-gray-300 text-sm mb-3">{currentCode.description}</p>
                     
                     {/* Highlights */}
@@ -615,7 +615,7 @@ export default function CodePanel({ isOpen, onClose, activeSection }: CodePanelP
                         </span>
                       </div>
                       
-                      <div className="h-full overflow-auto py-4" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                      <div className="h-full overflow-auto px-4 py-4">
                         <pre className="text-sm text-gray-300 leading-relaxed m-0">
                           <code className="language-tsx">{currentCode.code}</code>
                         </pre>

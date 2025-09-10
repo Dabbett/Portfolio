@@ -7,9 +7,15 @@
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
+
+/* Reset margins and padding only for specific elements that need it */
+h1, h2, h3, h4, h5, h6, p, ul, ol, li, blockquote, figure, figcaption, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Allow Tailwind classes to work by not resetting everything */
 
 html,
 body {
@@ -30,11 +36,34 @@ a {
   color: inherit;
   text-decoration: none;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
+}
+
+/* Only apply dotted border to text links with the 'text-link' class */
+a.text-link {
   border-bottom: dotted 1px rgba(255, 255, 255, 0.5);
 }
 
-a:hover {
+a.text-link:hover {
   border-bottom-color: transparent;
+}
+
+/* Blog title overrides */
+.blog-title {
+  letter-spacing: normal !important;
+}
+
+/* Blog content heading spacing */
+.prose h2,
+.prose h3,
+.prose h4 {
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+
+.prose h2:first-child {
+  margin-top: 0 !important;
 }
 
 h1, h2, h3, h4, h5, h6 {

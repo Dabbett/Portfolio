@@ -65,6 +65,7 @@ export default function Home() {
     setActiveSection(null); // Go back to no content
   };
 
+
   const toggleCodePanel = () => {
     setIsCodePanelOpen(!isCodePanelOpen);
   };
@@ -195,6 +196,7 @@ export default function Home() {
         {/* Footer */}
         <Footer />
       </div>
+
 
       {/* Code Panel Toggle - Desktop Only */}
       <div className="hidden lg:block">

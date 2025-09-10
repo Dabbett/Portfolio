@@ -6,7 +6,6 @@ import { X, ExternalLink, BookOpen } from 'lucide-react';
 
 interface WorkProps {
   onClose: () => void;
-  onShowBlogPost?: (postId: string) => void;
 }
 
 interface Project {
@@ -37,7 +36,7 @@ const projects: Project[] = [
     image: '/images/TidesBeverageCo.png', 
     link: 'https://tidesbeverage.com',
     technologies: 'Shopify, E-commerce, Custom Design, Mobile Optimization',
-    blogPost: 'tides-beverage-co'
+    blogPost: 'tides-beverage-co-ecommerce-solution'
   },
   {
     id: 'heidi',
@@ -45,7 +44,8 @@ const projects: Project[] = [
     description: 'Commissioned Responsive Therapist Website with contact form API integration',
     image: '/images/Heidi3.png',
     link: 'https://heidiesparrago.com',
-    technologies: 'Responsive Design, API Integration, Contact Forms'
+    technologies: 'Responsive Design, API Integration, Contact Forms',
+    blogPost: 'heidiesparrago-therapy-website'
   },
   {
     id: 'quizzard',
@@ -89,7 +89,7 @@ const projects: Project[] = [
   // }
 ];
 
-export default function Work({ onClose, onShowBlogPost }: WorkProps) {
+export default function Work({ onClose }: WorkProps) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 10 }}
@@ -124,8 +124,7 @@ export default function Work({ onClose, onShowBlogPost }: WorkProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="glass-container"
-            style={{ padding: '0.75rem' }}
+            className="glass-container p-3"
             role="article"
             aria-labelledby={`project-${project.id}-title`}
           >
@@ -166,24 +165,24 @@ export default function Work({ onClose, onShowBlogPost }: WorkProps) {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white hover:bg-white/7.5 active:bg-white/17.5"
-                    style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
+                    className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white/30 hover:bg-white/7.5 active:bg-white/17.5"
                     aria-label={`View ${project.title} project (opens in new tab)`}
                   >
-                    <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                    <ExternalLink className="w-4 h-4 " aria-hidden="true" />
                     View Project
                   </a>
                   
-                  {project.blogPost && onShowBlogPost && (
-                    <button
-                      onClick={() => onShowBlogPost(project.blogPost!)}
-                      className="inline-flex items-center gap-2 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white hover:bg-white/7.5 active:bg-white/17.5"
-                      style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
-                      aria-label={`Read case study for ${project.title}`}
+                  {project.blogPost && (
+                    <a
+                      href={`/blog/${project.blogPost}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white/20 hover:bg-white/7.5 active:bg-white/17.5"
+                      aria-label={`Read case study for ${project.title} (opens in new tab)`}
                     >
                       <BookOpen className="w-4 h-4" aria-hidden="true" />
                       Read Case Study
-                    </button>
+                    </a>
                   )}
                 </div>
 

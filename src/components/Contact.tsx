@@ -216,7 +216,7 @@ export default function Contact({ onClose }: ContactProps) {
 
       {/* Social Links */}
       <div className="mb-8">
-        <h3 className="text-lg font-medium text-center text-white uppercase tracking-wide mb-6" style={{ marginBottom: '1.5rem', marginTop: '1.5rem' }}>Or connect with me</h3>
+        <h3 className="text-lg font-medium text-center text-white uppercase tracking-wide my-6">Or connect with me</h3>
         
         <div className="flex justify-center  border border-white rounded glass-container-light relative overflow-hidden">
           <a
