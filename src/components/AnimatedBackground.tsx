@@ -31,7 +31,6 @@ export default function AnimatedBackground() {
   const [interactionStartTime, setInteractionStartTime] = useState<number>(0);
   const [hasLoggedWelcome, setHasLoggedWelcome] = useState(false);
   const [hasLoggedInteraction, setHasLoggedInteraction] = useState(false);
-  const [scatterDirections, setScatterDirections] = useState<{x: number, y: number}[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   
   // Use refs to avoid dependency issues
@@ -86,8 +85,8 @@ export default function AnimatedBackground() {
     if (isInteractingRef.current || !hasRejoinedRef.current || !mountedRef.current) return; // Prevent multiple interactions or clicks before rejoining
     
     if (!hasLoggedInteraction) {
-      console.log("🎯 Button clicked! Time to show off some smooth animations...");
-      console.log("💡 Pro tip: I built this parabolic speed curve from scratch. Imagine what I could do for your product!");
+      console.log("Button clicked! Time to show off some smooth animations...");
+      console.log("Pro tip: I built this parabolic speed curve from scratch. Imagine what I could do for your product!");
       setHasLoggedInteraction(true);
     }
     
@@ -105,7 +104,7 @@ export default function AnimatedBackground() {
       const directions: {x: number, y: number}[] = [];
       for (let i = 0; i < 8; i++) {
         const angle = Math.random() * Math.PI * 2; // Completely random direction
-        const radius = 80 + Math.random() * 40; // Random distance to go off screen
+        const radius = 150 + Math.random() * 100; // Much larger distance to go completely off screen
         
         const targetX = buttonPosition.x + Math.cos(angle) * radius;
         const targetY = buttonPosition.y + Math.sin(angle) * radius;
@@ -113,7 +112,6 @@ export default function AnimatedBackground() {
         newTargets.push({ x: targetX, y: targetY });
         directions.push({ x: targetX, y: targetY }); // Store for return journey
       }
-      setScatterDirections(directions); // Store directions for return
     } else {
       // Fallback to random if no button position
       for (let i = 0; i < 8; i++) {
@@ -139,7 +137,7 @@ export default function AnimatedBackground() {
     // Start gradual fade after they've had time to race off
     setTimeout(() => {
       if (!hasLoggedInteraction) {
-        console.log("👻 Poof! Orbs are fading away... (Don't worry, they'll be back!)");
+        console.log("Poof! Orbs are fading away... (Don't worry, they'll be back!)");
       }
       setBlobs(prevBlobs => 
         prevBlobs.map(blob => ({
@@ -152,7 +150,7 @@ export default function AnimatedBackground() {
         // Complete fade out after more time
         const timer2 = setTimeout(() => {
           if (!hasLoggedInteraction) {
-            console.log("✨ And they're gone! (Like my bugs after a good debugging session)");
+            console.log("And they're gone! (Like my bugs after a good debugging session)");
           }
           setBlobs(prevBlobs =>
             prevBlobs.map(blob => ({
@@ -167,33 +165,70 @@ export default function AnimatedBackground() {
         // Start movement back to normal behavior and fade-in simultaneously
         setTimeout(() => {
           if (!hasLoggedInteraction) {
-            console.log("🎪 Ta-da! Orbs are back and better than ever!");
-            console.log("💼 Ready to bring this level of creativity to your team? Let's chat!");
+            console.log("Ta-da! Orbs are back and better than ever!");
+            console.log("Ready to bring this level of creativity to your team? Let's chat!");
           }
           setIsInteracting(false);
           setHasRejoined(true);
           
-          // Fade back in and return from scatter directions
+          // Position orbs off-screen initially, then animate them in
           setBlobs(prevBlobs => 
-            prevBlobs.map((blob, index) => ({
-              ...blob,
-              speed: 0.015, // Slower speed for smooth transition
-              // opacity: 0.3 + (blob.size / 200), // Fade back in
-              targetX: scatterDirections[index]?.x ?? Math.random() * 100, // Return from scatter direction
-              targetY: scatterDirections[index]?.y ?? Math.random() * 100, // Return from scatter direction
-              targetSize: Math.random() * 60 + 40, // Random target size
-              movementPhase: 'random' as const, // Reset to random movement
-              hasMet: false, // Reset meeting state
-              lastMeetingTime: 0, // Reset meeting time
-            }))
+            prevBlobs.map((blob) => {
+              // Generate off-screen starting positions (from various edges)
+              const edge = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
+              let startX, startY;
+              
+              switch(edge) {
+                case 0: // Top edge
+                  startX = Math.random() * 100;
+                  startY = -20;
+                  break;
+                case 1: // Right edge
+                  startX = 120;
+                  startY = Math.random() * 100;
+                  break;
+                case 2: // Bottom edge
+                  startX = Math.random() * 100;
+                  startY = 120;
+                  break;
+                case 3: // Left edge
+                  startX = -20;
+                  startY = Math.random() * 100;
+                  break;
+              }
+              
+              return {
+                ...blob,
+                x: startX || 0, // Start off-screen
+                y: startY || 0, // Start off-screen
+                speed: 0.02, // Slightly faster for smooth entry
+                targetX: Math.random() * 100, // Target random on-screen position
+                targetY: Math.random() * 100, // Target random on-screen position
+                targetSize: Math.random() * 60 + 40, // Random target size
+                movementPhase: 'random' as const, // Reset to random movement
+                hasMet: false, // Reset meeting state
+                lastMeetingTime: 0, // Reset meeting time
+                opacity: 0.1, // Start with low opacity
+              };
+            })
           );
         }, 3000); // Start movement and fade-in at 3 seconds
-  }, [fadeTimer, hasLoggedInteraction, scatterDirections]);
+        
+        // Gradually fade in the orbs as they enter
+        setTimeout(() => {
+          setBlobs(prevBlobs => 
+            prevBlobs.map(blob => ({
+              ...blob,
+              opacity: 0.3 + (blob.size / 200), // Fade to normal opacity
+            }))
+          );
+        }, 3200); // Start fade-in 200ms after movement starts
+  }, [fadeTimer, hasLoggedInteraction]);
 
   useEffect(() => {
     if (!hasLoggedWelcome) {
-      console.log("🎨 AnimatedBackground loaded! Built with love and attention to detail.");
-      console.log("👋 Hi there! I'm Dylan, and I made this interactive background just for you!");
+      console.log("AnimatedBackground loaded! Built with love and attention to detail.");
+      console.log("Hi there! I'm Dylan, and I made this interactive background just for you!");
       setHasLoggedWelcome(true);
     }
     setMounted(true);
@@ -210,29 +245,64 @@ export default function AnimatedBackground() {
     setBlobs(prevBlobs => {
       if (prevBlobs.length > 0) return prevBlobs; // Don't reinitialize if blobs exist
       const blobCount = isMobile ? 4 : 8; // Fewer blobs on mobile
-      const initialBlobs: Blob[] = Array.from({ length: blobCount }, (_, i) => ({
-        id: `blob-${i}`,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 60 + 40,
-        color: ['#8B5CF6', '#06B6D4', '#3B82F6', '#EC4899', '#10B981', '#F59E0B', '#6366F1', '#A855F7'][i],
-        targetX: Math.random() * 100,
-        targetY: Math.random() * 100,
-        targetSize: Math.random() * 60 + 40,
-        speed: Math.random() * 0.02 + 0.01,
-        hasMet: false,
-        lastMeetingTime: 0,
-        movementPhase: 'random' as const,
-        isInteracting: false,
-        interactionSpeed: 0,
-        opacity: 0.3 + (Math.random() * 60 + 40) / 200, // Initial opacity based on size
-      }));
+      const initialBlobs: Blob[] = Array.from({ length: blobCount }, (_, i) => {
+        // Generate off-screen starting positions (from various edges)
+        const edge = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
+        let startX, startY;
+        
+        switch(edge) {
+          case 0: // Top edge
+            startX = Math.random() * 100;
+            startY = -20;
+            break;
+          case 1: // Right edge
+            startX = 120;
+            startY = Math.random() * 100;
+            break;
+          case 2: // Bottom edge
+            startX = Math.random() * 100;
+            startY = 120;
+            break;
+          case 3: // Left edge
+            startX = -20;
+            startY = Math.random() * 100;
+            break;
+        }
+        
+        return {
+          id: `blob-${i}`,
+          x: startX || 0, // Start off-screen
+          y: startY || 0, // Start off-screen
+          size: Math.random() * 60 + 40,
+          color: ['#8B5CF6', '#06B6D4', '#3B82F6', '#EC4899', '#10B981', '#F59E0B', '#6366F1', '#A855F7'][i],
+          targetX: Math.random() * 100, // Target random on-screen position
+          targetY: Math.random() * 100, // Target random on-screen position
+          targetSize: Math.random() * 60 + 40,
+          speed: 0.02, // Slightly faster for smooth entry
+          hasMet: false,
+          lastMeetingTime: 0,
+          movementPhase: 'random' as const,
+          isInteracting: false,
+          interactionSpeed: 0,
+          opacity: 0.1, // Start with low opacity
+        };
+      });
       
       return initialBlobs;
     });
+    
+    // Gradually fade in the initial orbs as they enter
+    setTimeout(() => {
+      setBlobs(prevBlobs => 
+        prevBlobs.map(blob => ({
+          ...blob,
+          opacity: 0.3 + (blob.size / 200), // Fade to normal opacity
+        }))
+      );
+    }, 1000); // Start fade-in after 1 second
 
     return () => window.removeEventListener('resize', checkMobile);
-  }, [hasLoggedWelcome]); // Only run once on mount
+  }, [hasLoggedWelcome, isMobile]); // Include isMobile dependency
 
   // Separate effect for event listener
   useEffect(() => {
@@ -310,7 +380,7 @@ export default function AnimatedBackground() {
         
         // Occasional fun logs during normal behavior (only once)
         if (prevBlobs.some(blob => blob.movementPhase === 'random' && Math.random() < 0.001) && !hasLoggedInteraction) {
-          console.log("🎲 Orbs are doing their thing... (Just like me, always learning and adapting!)");
+          console.log("Orbs are doing their thing... (Just like me, always learning and adapting!)");
         }
         
         return prevBlobs.map(blob => {
@@ -371,18 +441,19 @@ export default function AnimatedBackground() {
           
           
           
-          // Random movement for non-meeting blobs (less frequent on mobile)
-          const randomChance = isMobile ? 0.005 : 0.01; // Half the chance on mobile
+          // Random movement for non-meeting blobs - more frequent exploration
+          const randomChance = isMobile ? 0.008 : 0.015; // Increased for more exploration
           if (blob.movementPhase === 'random' && Math.random() < randomChance) {
-            newTargetX = Math.random() * 100;
-            newTargetY = Math.random() * 100;
+            // Allow orbs to explore beyond screen edges for natural movement
+            newTargetX = Math.random() * 120 - 10; // -10% to 110% range
+            newTargetY = Math.random() * 120 - 10; // -10% to 110% range
             newTargetSize = Math.random() * 60 + 40;
           }
           
           return {
             ...blob,
-            x: isInteracting ? newX : Math.max(0, Math.min(100, newX)), // Only allow off-screen during interaction
-            y: isInteracting ? newY : Math.max(0, Math.min(100, newY)), // Only allow off-screen during interaction
+            x: isInteracting ? newX : Math.max(-5, Math.min(105, newX)), // Allow slight off-screen exploration
+            y: isInteracting ? newY : Math.max(-5, Math.min(105, newY)), // Allow slight off-screen exploration
             size: Math.max(20, Math.min(120, newSize)),
             targetX: newTargetX,
             targetY: newTargetY,
@@ -396,7 +467,7 @@ export default function AnimatedBackground() {
     }, isMobile ? 50 : 33); // Slower on mobile for better performance
 
     return () => clearInterval(interval);
-  }, [mounted, isInteracting, hasRejoined, interactionStartTime, hasLoggedInteraction]);
+  }, [mounted, isInteracting, hasRejoined, interactionStartTime, hasLoggedInteraction, isMobile]);
 
   // This effect is no longer needed since fade-in happens at 3 seconds
 
@@ -412,7 +483,7 @@ export default function AnimatedBackground() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 5 }}>
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 5, overflow: 'visible' }}>
       {/* Dynamic lava lamp blobs */}
       {blobs.map((blob) => (
         <motion.div
@@ -424,11 +495,9 @@ export default function AnimatedBackground() {
             width: `${blob.size}px`,
             height: `${blob.size}px`,
             background: `radial-gradient(circle, ${blob.color} 0%, ${blob.color}80 50%, ${blob.color}40 100%)`,
-            opacity: blob.opacity !== undefined ? blob.opacity : (0.3 + (blob.size / 200)),
             borderRadius: '50%',
             boxShadow: `0 0 ${blob.size * 0.8}px ${blob.color}, inset 0 0 ${blob.size * 0.4}px ${blob.color}80`,
             transform: 'translate(-50%, -50%)',
-            // transition: 'opacity 0.5s ease-in-out', // Smooth opacity transition
             // iOS optimizations
             willChange: 'transform, opacity',
             WebkitTransform: 'translate(-50%, -50%)',
@@ -436,12 +505,16 @@ export default function AnimatedBackground() {
             backfaceVisibility: 'hidden',
           }}
           animate={{
+            opacity: blob.opacity !== undefined ? blob.opacity : (0.3 + (blob.size / 200)),
             scale: isMobile ? [1, 1.05, 0.95, 1] : [1, 1.1, 0.9, 1], // Less intense on mobile
           }}
           transition={{
-            duration: isMobile ? 4 + Math.random() * 2 : 3 + Math.random() * 2, // Slower on mobile
-            repeat: Infinity,
-            ease: "easeInOut",
+            opacity: { duration: 1.5, ease: "easeInOut" },
+            scale: {
+              duration: isMobile ? 4 + Math.random() * 2 : 3 + Math.random() * 2, // Slower on mobile
+              repeat: Infinity,
+              ease: "easeInOut",
+            }
           }}
         />
       ))}

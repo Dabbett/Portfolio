@@ -12,7 +12,7 @@ export default function Header({ onNavigate }: HeaderProps) {
     <motion.header
       initial={{ opacity: 0, scale: 0.95, filter: 'blur(0.125rem)' }}
       animate={{ opacity: 1, scale: 1, filter: 'blur(0rem)' }}
-      transition={{ duration: 0.325 }}
+      transition={{ duration: 0.325, delay: 2 }}
       className="flex flex-col items-center transition-all duration-325 ease-in-out max-w-full text-center"
       // style={{
       //   backgroundImage: 'radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%)'
@@ -57,7 +57,18 @@ export default function Header({ onNavigate }: HeaderProps) {
         <ul className="flex flex-col sm:flex-row list-none p-0 border border-white rounded min-w-40 max-w-full glass-container-light">
           <li className="border-t sm:border-t-0 sm:border-l border-white first:border-t-0 sm:first:border-l-0">
             <button
-              onClick={() => onNavigate('intro')}
+              onClick={() => {
+                onNavigate('intro');
+                // Scroll to position nav at top with margin
+                setTimeout(() => {
+                  const nav = document.querySelector('nav');
+                  if (nav) {
+                    const navRect = nav.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset + navRect.top - 20; // 20px margin
+                    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+                  }
+                }, 1000);
+              }}
               className="block w-full sm:min-w-30 text-xs font-light tracking-widest uppercase border-b-0 hover:bg-white/7.5 active:bg-white/17.5 transition-colors duration-200"
               style={{
                 height: '2.75rem',
@@ -70,7 +81,18 @@ export default function Header({ onNavigate }: HeaderProps) {
           </li>
           <li className="border-t sm:border-t-0 sm:border-l border-white">
             <button
-              onClick={() => onNavigate('work')}
+              onClick={() => {
+                onNavigate('work');
+                // Scroll to position nav at top with margin
+                setTimeout(() => {
+                  const nav = document.querySelector('nav');
+                  if (nav) {
+                    const navRect = nav.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset + navRect.top - 20; // 20px margin
+                    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+                  }
+                }, 1000);
+              }}
               className="block w-full sm:min-w-30 text-xs font-light tracking-widest uppercase border-b-0 hover:bg-white/7.5 active:bg-white/17.5 transition-colors duration-200"
               style={{
                 height: '2.75rem',
@@ -83,7 +105,18 @@ export default function Header({ onNavigate }: HeaderProps) {
           </li>
           <li className="border-t sm:border-t-0 sm:border-l border-white">
             <button
-              onClick={() => onNavigate('about')}
+              onClick={() => {
+                onNavigate('about');
+                // Scroll to position nav at top with margin
+                setTimeout(() => {
+                  const nav = document.querySelector('nav');
+                  if (nav) {
+                    const navRect = nav.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset + navRect.top - 20; // 20px margin
+                    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+                  }
+                }, 1000);
+              }}
               className="block w-full sm:min-w-30 text-xs font-light tracking-widest uppercase border-b-0 hover:bg-white/7.5 active:bg-white/17.5 transition-colors duration-200"
               style={{
                 height: '2.75rem',
@@ -96,7 +129,18 @@ export default function Header({ onNavigate }: HeaderProps) {
           </li>
           <li className="border-t sm:border-t-0 sm:border-l border-white">
             <button
-              onClick={() => onNavigate('contact')}
+              onClick={() => {
+                onNavigate('contact');
+                // Scroll to position nav at top with margin
+                setTimeout(() => {
+                  const nav = document.querySelector('nav');
+                  if (nav) {
+                    const navRect = nav.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset + navRect.top - 20; // 20px margin
+                    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+                  }
+                }, 1000);
+              }}
               className="block w-full sm:min-w-30 text-xs font-light tracking-widest uppercase border-b-0 hover:bg-white/7.5 active:bg-white/17.5 transition-colors duration-200"
               style={{
                 height: '2.75rem',

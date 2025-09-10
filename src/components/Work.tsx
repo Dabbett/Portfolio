@@ -2,10 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { X, ExternalLink } from 'lucide-react';
+import { X, ExternalLink, BookOpen } from 'lucide-react';
 
 interface WorkProps {
   onClose: () => void;
+  onShowBlogPost?: (postId: string) => void;
 }
 
 interface Project {
@@ -16,23 +17,41 @@ interface Project {
   link: string;
   technologies: string;
   additionalInfo?: string;
+  blogPost?: string;
 }
 
 const projects: Project[] = [
   {
     id: 'mangrove',
     title: 'Mangrove',
-    description: 'Designed and built as a mobile-first web app, Mangrove offers users a guided emotional journey, from navigating grief to experiencing joy, from burnout to finding inspiration. It goes beyond a typical AI reskinned chatbot, incorporating leading questions, a nature-inspired UI, ambient adaptive visuals, and a personalized AI voice for an optional conversational experience.',
+    description: 'Designed and built as a mobile-first web app, Mangrove offers users a guided emotional journey—from navigating grief to experiencing joy, from burnout to finding inspiration. It goes beyond a typical AI chatbot by asking thoughtful questions, featuring a nature-inspired UI, adaptive visuals, and an optional personalized AI voice.',
     image: '/images/MangroveHomepage.png',
     link: 'https://mangrove-tau.vercel.app/',
-    technologies: 'Built with Next.js, React, and TypeScript, Mangrove features Tailwind CSS and Framer Motion for smooth animations, Groq and LLaMA 4 for quick and empathetic AI responses, and voice capabilities through AWS Polly and Whisper.',
-    additionalInfo: 'The concept behind Mangrove stemmed from a fundamental question: What if a mental health app proactively engaged to mentor users daily, rather than solely during crises? This approach aims to confidentially monitor user metrics and meets users where they are in their emotional journey. (Seriously, we\'ll never sell your personal information.... Looking at you 23andMe .....) Keep tabs on yourself, see your personal growth over time and have a companion to catch you before you fall. I take pride in Mangrove\'s ongoing development and draw inspiration from those who have shared their emotional experiences with me. I welcome feedback, ideas, and discussions with individuals interested in AI, wellness tech, or the creation of emotionally intelligent software. Explore Mangrove Today.'
+    technologies: 'Built with Next.js, React, and TypeScript, Mangrove uses Tailwind CSS and Framer Motion for smooth animations, Groq and LLaMA 4 for fast and empathetic AI responses, and AWS Polly and Whisper for natural voice capabilities.',
+    additionalInfo: 'Mangrove was inspired by a simple question: What if an emotional wellness companion could proactively engage with users daily, not just during moments of crisis? It confidentially tracks patterns, adapts its approach seamlessly, and helps you reflect on your growth over time. (Seriously, we\'ll never sell your personal information — looking at you 23andMe.) Mangrove is a project I take pride in and continue to refine, drawing inspiration from those who have shared their experiences with me. I welcome feedback and discussion from anyone interested in AI, wellness tech, or emotionally intelligent software. Explore Mangrove today.\n\n**Disclaimer:** Mangrove is an emotional wellness companion designed for reflection and self-growth. It is not a substitute for professional mental health care, diagnosis, or treatment. If you are in crisis, please seek help from a licensed provider or emergency services.'
+  },
+  {
+    id: 'tides-beverage',
+    title: 'TidesBeverageCo',
+    description: 'Custom e-commerce solution for a local craft beverage company. Built a complete online storefront with custom Shopify integration, mobile optimization, and seamless customer experience.',
+    image: '/images/TidesBeverageCo.png', 
+    link: 'https://tidesbeverage.com',
+    technologies: 'Shopify, E-commerce, Custom Design, Mobile Optimization',
+    blogPost: 'tides-beverage-co'
+  },
+  {
+    id: 'heidi',
+    title: 'Heidi Esparrago Therapy',
+    description: 'Commissioned Responsive Therapist Website with contact form API integration',
+    image: '/images/Heidi3.png',
+    link: 'https://heidiesparrago.com',
+    technologies: 'Responsive Design, API Integration, Contact Forms'
   },
   {
     id: 'quizzard',
     title: 'The Quizzard',
     description: 'AI empowered Quiz App. Upload a PDF and my app will generate a quiz to test your knowledge based on the information contained in the document you provide.',
-    image: '/images/TheQuizzard.png',
+    image: '/images/TheQuizzard2.png',
     link: 'https://thequizzard.vercel.app',
     technologies: 'React, AI Integration, PDF Processing'
   },
@@ -44,41 +63,33 @@ const projects: Project[] = [
     link: 'https://taskdrag.netlify.app/',
     technologies: 'React, Drag & Drop, Task Management'
   },
-  {
-    id: 'mern-ai',
-    title: 'MERN AI Chatbot',
-    description: 'Full-stack AI chatbot application (under construction, deprecated April 8 due to free database account discontinuation)',
-    image: '/images/MERN-ai.png',
-    link: 'https://github.com/Dabbett/AI-CHATBOT-virtual-friend/tree/cdfded6990831f2e6877d42e21536706e14817bc',
-    technologies: 'MERN Stack, AI Integration'
-  },
-  {
-    id: 'fishnotebook',
-    title: 'Fish Notebook',
-    description: 'Full-Stack CRUD application using MongoDB, JS, HTML and CSS',
-    image: '/images/FishNotebook.png',
-    link: '#',
-    technologies: 'MongoDB, JavaScript, HTML, CSS'
-  },
-  {
-    id: 'sourdough',
-    title: 'Old Soul Sourdough',
-    description: 'E-commerce storefront for artisanal bread business',
-    image: '/images/SourDoughPage.jpg',
-    link: 'https://OldSoulSourdough.netlify.app',
-    technologies: 'E-commerce, Frontend Development'
-  },
-  {
-    id: 'heidi',
-    title: 'Heidi Esparrago Therapy',
-    description: 'Commissioned Responsive Therapist Website with contact form API integration',
-    image: '/images/heidi2.png',
-    link: 'https://heidiesparrago.com',
-    technologies: 'Responsive Design, API Integration, Contact Forms'
-  }
+  // {
+  //   id: 'mern-ai',
+  //   title: 'MERN AI Chatbot',
+  //   description: 'Full-stack AI chatbot application (under construction, deprecated April 8 due to free database account discontinuation)',
+  //   image: '/images/MERN-ai.png',
+  //   link: 'https://github.com/Dabbett/AI-CHATBOT-virtual-friend/tree/cdfded6990831f2e6877d42e21536706e14817bc',
+  //   technologies: 'MERN Stack, AI Integration'
+  // },
+  // {
+  //   id: 'fishnotebook',
+  //   title: 'Fish Notebook',
+  //   description: 'Full-Stack CRUD application using MongoDB, JS, HTML and CSS',
+  //   image: '/images/FishNotebook.png',
+  //   link: '#',
+  //   technologies: 'MongoDB, JavaScript, HTML, CSS'
+  // },
+  // {
+  //   id: 'sourdough',
+  //   title: 'Old Soul Sourdough',
+  //   description: 'E-commerce storefront for artisanal bread business',
+  //   image: '/images/SourDoughPage.jpg',
+  //   link: 'https://OldSoulSourdough.netlify.app',
+  //   technologies: 'E-commerce, Frontend Development'
+  // }
 ];
 
-export default function Work({ onClose }: WorkProps) {
+export default function Work({ onClose, onShowBlogPost }: WorkProps) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 10 }}
@@ -90,10 +101,10 @@ export default function Work({ onClose }: WorkProps) {
       {/* Close Button */}
       <button
         onClick={onClose}
-        className="absolute top-0 right-0 w-16 h-16 cursor-pointer text-indent-16 overflow-hidden whitespace-nowrap"
+        className="absolute -top-2 -right-2 w-12 h-12 cursor-pointer text-indent-16 overflow-hidden whitespace-nowrap z-10"
         aria-label="Close"
       >
-        <div className="absolute top-3 left-3 w-10 h-10 rounded-full bg-transparent hover:bg-white/7.5 active:bg-white/17.5 transition-colors duration-200 flex items-center justify-center">
+        <div className="absolute top-0 left-0 w-12 h-12 rounded-full bg-transparent hover:bg-white/7.5 active:bg-white/17.5 transition-colors duration-200 flex items-center justify-center">
           <X className="w-5 h-5 text-white" />
         </div>
       </button>
@@ -102,132 +113,82 @@ export default function Work({ onClose }: WorkProps) {
       <h2 className="text-2xl font-semibold leading-tight tracking-widest mb-8 border-b border-white w-max pb-2">
         Work
       </h2>
+      <p className="sr-only">
+        Portfolio showcasing my software development projects including web applications, mobile apps, and e-commerce solutions built with modern technologies.
+      </p>
 
-      {/* React Projects Section */}
-      <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4">React Projects</h3>
-        
-        {projects.slice(0, 4).map((project) => (
-          <div key={project.id} className="mb-8">
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block group"
-            >
-              <div className="image main mb-4">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  width={600}
-                  height={300}
-                  className="w-full rounded group-hover:opacity-90 transition-opacity duration-200"
-                />
+      <div className="grid gap-6">
+        {projects.map((project, index) => (
+          <motion.article
+            key={project.title}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="glass-container p-6"
+            role="article"
+            aria-labelledby={`project-${project.id}-title`}
+          >
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Project Image */}
+              <div className="md:w-1/3">
+                <div className="relative overflow-hidden rounded-lg">
+                  <Image
+                    src={project.image}
+                    alt={`${project.title} - ${project.description.substring(0, 100)}...`}
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
               </div>
-              <div className="flex items-center gap-2 mb-2">
-                <h4 className="text-lg font-semibold">{project.title}</h4>
-                <ExternalLink className="w-4 h-4" />
-              </div>
-            </a>
-            <p className="mb-4">{project.description}</p>
-            <p className="mb-4 text-sm text-gray-300">{project.technologies}</p>
-            {project.additionalInfo && (
-              <p className="mb-4 text-sm">{project.additionalInfo}</p>
-            )}
-          </div>
-        ))}
-      </div>
 
-      {/* Responsive Fullstack Websites Section */}
-      <div className="mb-8">
-        <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Responsive Fullstack Websites</h3>
-        {projects.slice(4, 5).map((project) => (
-          <div key={project.id} className="mb-8">
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block group"
-            >
-              <div className="image main mb-4">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  width={600}
-                  height={300}
-                  className="w-full rounded group-hover:opacity-90 transition-opacity duration-200"
-                />
-              </div>
-              <div className="flex items-center gap-2 mb-2">
-                <h4 className="text-lg font-semibold">{project.title}</h4>
-                <ExternalLink className="w-4 h-4" />
-              </div>
-            </a>
-            <p className="mb-4">{project.description}</p>
-            <p className="mb-4 text-sm text-gray-300">{project.technologies}</p>
-          </div>
-        ))}
-      </div>
+              {/* Project Details */}
+              <div className="md:w-2/3">
+                <h3 id={`project-${project.id}-title`} className="text-xl font-semibold mb-2 text-white">{project.title}</h3>
+                <p className="text-gray-300 mb-4 leading-relaxed">{project.description}</p>
+                
+                <div className="mb-4">
+                  <span className="text-sm font-medium text-gray-400">Technologies:</span>
+                  <p className="text-sm text-gray-300 mt-1">{project.technologies}</p>
+                </div>
 
-      {/* ECommerce Storefronts Section */}
-      <div className="mb-8">
-        <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">ECommerce Storefronts</h3>
-        {projects.slice(5, 6).map((project) => (
-          <div key={project.id} className="mb-8">
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block group"
-            >
-              <div className="image main mb-4">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  width={600}
-                  height={300}
-                  className="w-full rounded group-hover:opacity-90 transition-opacity duration-200"
-                />
-              </div>
-              <div className="flex items-center gap-2 mb-2">
-                <h4 className="text-lg font-semibold">{project.title}</h4>
-                <ExternalLink className="w-4 h-4" />
-              </div>
-            </a>
-            <p className="mb-4">{project.description}</p>
-            <p className="mb-4 text-sm text-gray-300">{project.technologies}</p>
-          </div>
-        ))}
-      </div>
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm"
+                    aria-label={`View ${project.title} project (opens in new tab)`}
+                  >
+                    <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                    View Project
+                  </a>
+                  
+                  {project.blogPost && onShowBlogPost && (
+                    <button
+                      onClick={() => onShowBlogPost(project.blogPost!)}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 text-sm"
+                      aria-label={`Read case study for ${project.title}`}
+                    >
+                      <BookOpen className="w-4 h-4" aria-hidden="true" />
+                      Read Case Study
+                    </button>
+                  )}
+                </div>
 
-      {/* Responsive Frontend Websites Section */}
-      <div className="mb-8">
-        <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Responsive Frontend Websites</h3>
-        {projects.slice(6, 7).map((project) => (
-          <div key={project.id} className="mb-8">
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block group"
-            >
-              <div className="image main mb-4">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  width={600}
-                  height={300}
-                  className="w-full rounded group-hover:opacity-90 transition-opacity duration-200"
-                />
+                {/* Additional Info */}
+                {project.additionalInfo && (
+                  <div className="mt-4 p-4 bg-gray-800/50 rounded-lg">
+                    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
+                      {project.additionalInfo}
+                    </p>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-2 mb-2">
-                <h4 className="text-lg font-semibold">{project.title}</h4>
-                <ExternalLink className="w-4 h-4" />
-              </div>
-            </a>
-            <p className="mb-4">{project.description}</p>
-            <p className="mb-4 text-sm text-gray-300">{project.technologies}</p>
-          </div>
+            </div>
+          </motion.article>
         ))}
       </div>
     </motion.article>

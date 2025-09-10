@@ -2,13 +2,14 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { X } from 'lucide-react';
+import { X, Sparkles } from 'lucide-react';
 
 interface IntroProps {
   onClose: () => void;
+  onNavigate?: (section: 'intro' | 'work' | 'about' | 'contact') => void;
 }
 
-export default function Intro({ onClose }: IntroProps) {
+export default function Intro({ onClose, onNavigate }: IntroProps) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 10 }}
@@ -20,10 +21,10 @@ export default function Intro({ onClose }: IntroProps) {
       {/* Close Button */}
       <button
         onClick={onClose}
-        className="absolute top-0 right-0 w-16 h-16 cursor-pointer text-indent-16 overflow-hidden whitespace-nowrap"
+        className="absolute -top-2 -right-2 w-12 h-12 cursor-pointer text-indent-16 overflow-hidden whitespace-nowrap z-10"
         aria-label="Close"
       >
-        <div className="absolute top-3 left-3 w-10 h-10 rounded-full bg-transparent hover:bg-white/7.5 active:bg-white/17.5 transition-colors duration-200 flex items-center justify-center">
+        <div className="absolute top-0 left-0 w-12 h-12 rounded-full bg-transparent hover:bg-white/7.5 active:bg-white/17.5 transition-colors duration-200 flex items-center justify-center">
           <X className="w-5 h-5 text-white" />
         </div>
       </button>
@@ -43,26 +44,56 @@ export default function Intro({ onClose }: IntroProps) {
         />
       </div>
 
-      <p className="mb-8 break-words hyphens-auto">
-        My name is Dylan Abbett, your next software developer.
-        <br />
-        <br />
-        I am passionate about innovation and aiming to leverage proficiency in cutting-edge software development methodologies, state-of-the-art programming languages, and robust software design principles to develop performance-optimized software solutions. I am eager to contribute to the success of complex software projects while fostering a collaborative and growth-oriented work environment. Take a look at some of my{' '}
-        <button
-          onClick={() => {/* Navigate to work section */}}
-          className="text-white hover:border-b-white transition-colors duration-200"
+      {/* TL;DR - Inline Highlight Style */}
+      <div className="mb-8 relative">
+        <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 to-purple-500 rounded-full"></div>
+        <div className="pl-6">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-4 h-4 text-blue-400" />
+            <span className="text-xs font-semibold text-blue-300 uppercase tracking-wider">tl;dr</span>
+          </div>
+          <p className="text-gray-200 text-sm leading-relaxed font-medium">
+            Focused and devoted software developer with experience across web, mobile, and backend — React, Next.js, TypeScript, Swift, MongoDB, Supabase, WordPress, and Shopify. I build everything from MVPs and AI-driven features to greenfield products, always aiming for clear, reliable, and scalable solutions.
+          </p>
+        </div>
+      </div>
+
+      {/* Full Bio */}
+      <div className="mb-8 break-words hyphens-auto">
+        <p className="mb-4">
+          I`m Dylan Abbett, a full-stack software developer who`s focused on turning ideas into real, working products.
+        </p>
+        
+        <p className="mb-4">
+          I work across web and mobile — React, Next.js, and TypeScript on the front end, Swift for iOS, and MongoDB or Supabase on the backend — with experience building MVPs, integrating AI features, and launching greenfield products from the ground up. I`ve also built with headless CMS platforms like WordPress to create flexible, content-driven applications, and developed full-scale custom Shopify sites to power both physical and digital storefronts. My focus is on developing software that solves real problems while staying clear, reliable, and scalable.
+        </p>
+        
+        <p className="mb-4">
+          I am devoted to collaboration, whether it`s early in the process — helping shape vision, refine ideas, add perspective, and guide them into clear, workable solutions — or later on, stepping in to untangle challenges and clean up messy codebases to get projects back on track.
+        </p>
+        
+        <p className="mb-6">
+          My background as a first responder taught me to approach an endlessly varied set of problems with both practicality and creativity. That same mindset drives how I build software today — delivering creative, reliable solutions that are ready to handle real-world challenges.
+        </p>
+        
+        <p>
+          Take a look at some of my{' '}
+        <span
+          onClick={() => onNavigate?.('work')}
+          className="text-white font-bold hover:border-b-white transition-colors duration-200 cursor-pointer"
         >
           previous work
-        </button>{' '}
+        </span>{' '}
         and{' '}
-        <button
-          onClick={() => {/* Navigate to contact section */}}
-          className="text-white hover:border-b-white transition-colors duration-200"
+        <span
+          onClick={() => onNavigate?.('contact')}
+          className="text-white font-bold hover:border-b-white transition-colors duration-200 cursor-pointer"
         >
           contact
-        </button>{' '}
-        me today.
-      </p>
+        </span>{' '}
+          me today.
+        </p>
+      </div>
     </motion.article>
   );
 }

@@ -11,7 +11,7 @@ export default function Footer() {
       className="w-full absolute bottom-5 left-5  max-w-full text-center"
     >
       <p className="text-xs tracking-widest opacity-75  absolute mb-2 uppercase">
-        &copy; DAbbett
+        &copy; DAbbett 2025
       </p>
     </motion.footer>
   );
