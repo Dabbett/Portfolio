@@ -86,7 +86,7 @@ export default function Home() {
         className="flex flex-col items-center justify-between relative min-h-screen w-full"
         style={{ 
           padding: 'clamp(2rem, 6vw, 4rem) 2rem', // Responsive: 2rem on mobile, 4rem on desktop
-          minHeight: '100vh',
+          minHeight: '100dvh', // Dynamic viewport height for mobile
           zIndex: 30
         }}
       >
