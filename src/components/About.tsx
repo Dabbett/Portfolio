@@ -56,7 +56,7 @@ export default function About({ onClose, onNavigate }: AboutProps) {
         <br />
         Head over to my{' '}
         <span 
-          className="text-white font-bold hover:border-b-white transition-colors duration-200 cursor-pointer"
+          className="text-white font-bold hover:border-b-white transition-colors duration-200 cursor-pointer link-lift-subtle"
           onClick={() => onNavigate?.('contact')}
         >
           Contact

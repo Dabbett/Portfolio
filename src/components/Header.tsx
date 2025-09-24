@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { Section } from '@/app/page';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useTiltEffect } from '@/hooks/useTiltEffect';
 
 interface HeaderProps {
   onNavigate: (section: Section) => void;
@@ -10,6 +11,44 @@ interface HeaderProps {
 
 export default function Header({ onNavigate }: HeaderProps) {
   const [isMobile, setIsMobile] = useState(false);
+  const [nameCardShimmerAngle, setNameCardShimmerAngle] = useState(45);
+  const [navShimmerAngle, setNavShimmerAngle] = useState(90);
+
+  // Memoize tilt effect options to prevent unnecessary re-creation
+  const nameCardTiltOptions = useMemo(() => ({
+    maxTilt: isMobile ? 0 : 8,
+    scale: isMobile ? 1 : 1.02,
+    magnetism: isMobile ? 0 : 0.05,
+    glareEffect: !isMobile,
+    speed: 200,
+    proximityThreshold: isMobile ? 0 : 50
+  }), [isMobile]);
+
+  const navTiltOptions = useMemo(() => ({
+    maxTilt: isMobile ? 0 : 7,
+    scale: isMobile ? 1 : 1.015,
+    magnetism: isMobile ? 0 : 0.04,
+    glareEffect: !isMobile,
+    speed: 175,
+    proximityThreshold: isMobile ? 0 : 50
+  }), [isMobile]);
+
+  // Use optimized tilt effects
+  const nameCardTilt = useTiltEffect<HTMLDivElement>(nameCardTiltOptions);
+  const navTilt = useTiltEffect<HTMLUListElement>(navTiltOptions);
+
+  // Memoize shimmer angle randomization to prevent unnecessary re-renders
+  const randomizeShimmerAngles = useCallback(() => {
+    setNameCardShimmerAngle(Math.random() * 180 - 45);
+    setNavShimmerAngle(Math.random() * 180 - 45);
+  }, []);
+
+  // Randomize angles when tilt effects become active
+  useEffect(() => {
+    if (nameCardTilt.isHovered || navTilt.isHovered) {
+      randomizeShimmerAngles();
+    }
+  }, [nameCardTilt.isHovered, navTilt.isHovered, randomizeShimmerAngles]);
 
   useEffect(() => {
     // Detect mobile device
@@ -35,12 +74,35 @@ export default function Header({ onNavigate }: HeaderProps) {
 
       {/* Content */}
       <div 
-        className="border-t border-b border-white w-full max-w-2xl glass-container-light"
+        ref={nameCardTilt.ref}
+        className="border-t border-b border-white w-full max-w-2xl glass-container-light relative overflow-hidden"
         style={{ 
           borderStyle: 'solid',
-          marginTop: 'clamp(1.5rem, 5vw, 3.5rem)' // Responsive: 1.5rem on mobile, 3.5rem on desktop
+          marginTop: 'clamp(1.5rem, 5vw, 3.5rem)', // Responsive: 1.5rem on mobile, 3.5rem on desktop
+          ...nameCardTilt.style,
         }}
       >
+        {/* Holographic glare overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={nameCardTilt.glareStyle}
+        />
+        
+        {/* Shimmer effect */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-25"
+          style={{
+            background: `
+              linear-gradient(
+                ${nameCardShimmerAngle}deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 70%
+              )
+            `,
+            animation: nameCardTilt.isHovered ? 'shimmer 3s ease-in-out infinite' : 'none',
+          }}
+        />
         <div 
           className={`transition-all duration-750 ease-in-out overflow-hidden ${isMobile ? '' : 'delay-250'}`}
           style={{
@@ -66,8 +128,33 @@ export default function Header({ onNavigate }: HeaderProps) {
 
       {/* Navigation */}
       <nav style={{ marginTop: 'clamp(1.5rem, 4vw, 3.5rem)' }}>
-        <ul className="flex flex-col sm:flex-row list-none p-0 border border-white rounded min-w-40 max-w-full glass-container-light">
-          <li className="border-t sm:border-t-0 sm:border-l border-white first:border-t-0 sm:first:border-l-0">
+        <ul 
+          ref={navTilt.ref}
+          className="flex flex-col sm:flex-row list-none p-0 border border-white rounded min-w-40 max-w-full glass-container-light relative overflow-hidden"
+          style={navTilt.style}
+        >
+          {/* Holographic glare overlay for navigation */}
+          <div 
+            className="absolute inset-0 pointer-events-none rounded"
+            style={navTilt.glareStyle}
+          />
+          
+          {/* Shimmer effect for navigation */}
+          <div 
+            className="absolute inset-0 pointer-events-none opacity-25 rounded"
+            style={{
+              background: `
+                linear-gradient(
+                  ${navShimmerAngle}deg,
+                  transparent 30%,
+                  rgba(255, 255, 255, 0.1) 50%,
+                  transparent 70%
+                )
+              `,
+              animation: navTilt.isHovered ? 'shimmer 3s ease-in-out infinite' : 'none',
+            }}
+          />
+          <li className="border-t sm:border-t-0 border-white first:border-t-0">
             <button
               onClick={() => {
                 onNavigate('intro');

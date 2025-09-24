@@ -80,14 +80,14 @@ export default function Intro({ onClose, onNavigate }: IntroProps) {
           Take a look at some of my{' '}
         <span
           onClick={() => onNavigate?.('work')}
-          className="text-white font-bold hover:border-b-white transition-colors duration-200 cursor-pointer"
+          className="text-white font-bold hover:border-b-white transition-colors duration-200 cursor-pointer link-lift-subtle"
         >
           previous work
         </span>{' '}
         and{' '}
         <span
           onClick={() => onNavigate?.('contact')}
-          className="text-white font-bold hover:border-b-white transition-colors duration-200 cursor-pointer"
+          className="text-white font-bold hover:border-b-white transition-colors duration-200 cursor-pointer link-lift-subtle"
         >
           contact
         </span>{' '}

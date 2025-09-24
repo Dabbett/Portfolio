@@ -99,7 +99,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="max-w-4xl mx-auto px-4 py-6">
             <Link 
               href="/blog"
-              className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200 mb-6"
+              className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200 mb-6 link-lift-subtle"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Blog
@@ -172,7 +172,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     href={post.externalLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium link-lift"
                   >
                     <ExternalLink className="w-4 h-4" />
                     View Project

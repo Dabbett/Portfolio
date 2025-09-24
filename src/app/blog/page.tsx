@@ -122,7 +122,7 @@ export default function BlogPage() {
                         <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight blog-title">
                           <Link 
                             href={`/blog/${post.slug}`}
-                            className="hover:text-blue-400 transition-colors duration-200"
+                            className="hover:text-blue-400 transition-colors duration-200 link-lift-subtle"
                           >
                             {post.title}
                           </Link>
@@ -146,7 +146,7 @@ export default function BlogPage() {
                         
                         <Link
                           href={`/blog/${post.slug}`}
-                          className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200"
+                          className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200 link-lift-subtle"
                         >
                           Read More
                           <ArrowRight className="w-4 h-4" />

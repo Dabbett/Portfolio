@@ -90,7 +90,7 @@ export default function NotFound() {
                 >
                   <Link
                     href="/"
-                    className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-colors duration-200 text-sm border border-white hover:bg-white/7.5 active:bg-white/17.5"
+                    className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-lg transition-colors duration-200 text-sm border border-white hover:bg-white/7.5 active:bg-white/17.5 link-lift"
                   >
                     <ArrowLeft className="w-4 h-4" />
                     Back to Home

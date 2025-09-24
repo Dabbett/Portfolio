@@ -374,3 +374,35 @@ body.is-article-visible #bg:after {
     margin: 1.5rem 0;
   }
 }
+
+/* Shimmer animation for holographic effects */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Link hover lift effects */
+.link-lift {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  transform-origin: center bottom;
+}
+
+.link-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Subtle link lift for inline text links */
+.link-lift-subtle {
+  transition: transform 0.15s ease-out;
+  display: inline-block;
+  transform-origin: center bottom;
+}
+
+.link-lift-subtle:hover {
+  transform: translateY(-1px);
+}

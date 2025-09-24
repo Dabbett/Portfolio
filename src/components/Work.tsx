@@ -165,7 +165,7 @@ export default function Work({ onClose }: WorkProps) {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white/30 hover:bg-white/7.5 active:bg-white/17.5"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white/30 hover:bg-white/7.5 active:bg-white/17.5 link-lift"
                     aria-label={`View ${project.title} project (opens in new tab)`}
                   >
                     <ExternalLink className="w-4 h-4 " aria-hidden="true" />
@@ -177,7 +177,7 @@ export default function Work({ onClose }: WorkProps) {
                       href={`/blog/${project.blogPost}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white/20 hover:bg-white/7.5 active:bg-white/17.5"
+                      className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors duration-200 text-sm border border-white/20 hover:bg-white/7.5 active:bg-white/17.5 link-lift"
                       aria-label={`Read case study for ${project.title} (opens in new tab)`}
                     >
                       <BookOpen className="w-4 h-4" aria-hidden="true" />
