@@ -71,7 +71,10 @@ export default function Home() {
   };
 
   return (
-    <div className={`min-h-screen ${isPreload ? 'is-preload' : ''}`} style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%)' }}>
+    <div className={`min-h-screen ${isPreload ? 'is-preload' : ''}`} style={{ 
+      background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%)',
+      minHeight: '100dvh' // Dynamic viewport height for better mobile support
+    }}>
       {/* Background */}
       <div id="bg"></div>
       

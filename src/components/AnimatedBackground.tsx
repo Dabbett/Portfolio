@@ -496,7 +496,12 @@ export default function AnimatedBackground() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 5, overflow: 'visible' }}>
+    <div className="fixed inset-0 pointer-events-none" style={{ 
+      zIndex: 5, 
+      overflow: 'visible',
+      minHeight: '100dvh', // Dynamic viewport height for mobile
+      width: '100vw'
+    }}>
       {/* Dynamic lava lamp blobs */}
       {blobs.map((blob) => (
         <motion.div
